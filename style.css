@@ -1,1 +1,225 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Inter, system-ui, sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(135deg, #eef2f7, #dce3ec);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* BACKGROUND */
+.bg {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at top left, #ffffff, transparent 60%),
+        radial-gradient(circle at bottom right, #cfd8e3, transparent 60%);
+    filter: blur(70px);
+    z-index: -1;
+}
+
+/* LOADER */
+.loader {
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(25px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    transition: opacity .6s ease, visibility .6s ease;
+}
+
+.loader.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-card {
+    width: 300px;
+    padding: 35px;
+    border-radius: 22px;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(20px);
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+}
+
+.loader-bar {
+    height: 8px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.loader-progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #6fa8ff, #4e7cff);
+    transition: width .3s ease;
+}
+
+/* APP */
+.app {
+    width: 480px;
+    padding: 28px;
+    border-radius: 24px;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(22px);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+    transition: all .6s ease;
+}
+
+.hidden {
+    opacity: 0;
+    transform: scale(.96);
+}
+
+/* HEADER */
+header p {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* TABS */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab {
+    flex: 1;
+    padding: 12px;
+    border-radius: 16px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 500;
+    transition:
+        flex-grow 0.24s cubic-bezier(.34,1.56,.64,1),
+        background-color .2s ease,
+        box-shadow .25s ease;
+}
+
+.tab:hover {
+    background: rgba(255,255,255,.45);
+}
+
+.tab.active {
+    flex-grow: 1.25;
+    background: white;
+    box-shadow: 0 14px 34px rgba(0,0,0,.14);
+}
+
+/* CONTENT */
+.tab-content {
+    display: none;
+    animation: fadeUp .45s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #555;
+    line-height: 1.6;
+}
+
+/* STATUS */
+.status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.status-item {
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.6);
+}
+
+.progress {
+    height: 8px;
+    background: rgba(0,0,0,.08);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #6fa8ff, #4e7cff);
+    transition: width .6s ease;
+}
+
+/* DEVS */
+.dev-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dev {
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dev-name {
+    font-weight: 500;
+}
+
+/* ROLE TAGS */
+.role-tag {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Developer - Orange */
+.role-tag.dev {
+    background: #ffe6d1;
+    color: #d86a1f;
+}
+
+/* Projektleitung - Dunkles Blau */
+.role-tag.lead {
+    background: #dbe8ff;
+    color: #1f3d7a;
+}
+
+/* Stv. Projektleitung - Gelb */
+.role-tag.deputy {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* ANIMATION */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 
