@@ -31,7 +31,7 @@ document.querySelectorAll(".tab").forEach(tab => {
 /* STATUS DATA */
 const statusData = [
     { name: "Modelle", progress: 0 },
-    { name: "Gleislegung", progress: 20 },
+    { name: "Gleislegung", progress: 100 },
     { name: "Haltestellen", progress: 0 }
 ];
 
