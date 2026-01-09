@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erfurt v2 • Status</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+    <div class="loader-card">
+        <h1>Willkommen!</h1>
+        <div class="loader-bar">
+            <div class="loader-progress" id="loaderProgress"></div>
+        </div>
+    </div>
+</div>
+
+<!-- BACKGROUND -->
+<div class="bg"></div>
+
+<!-- APP -->
+<div class="app hidden" id="app">
+
+    <header>
+        <h2>Erfurt v2</h2>
+        <p>Status & Entwicklung</p>
+    </header>
+
+    <nav class="tabs">
+        <button class="tab active" data-tab="home">Home</button>
+        <button class="tab" data-tab="status">Status</button>
+        <button class="tab" data-tab="developer">Developer</button>
+    </nav>
+
+    <main>
+
+        <!-- HOME -->
+        <section class="tab-content active" id="home">
+            <h1>Willkommen bei Erfurt v2</h1>
+            <p>
+                Diese Website wurde erstellt, um unseren Nutzern transparent zu zeigen,
+                woran wir aktuell arbeiten, welche Systeme sich in Entwicklung befinden
+                und was bereits abgeschlossen ist.
+            </p>
+        </section>
+
+        <!-- STATUS -->
+        <section class="tab-content" id="status">
+            <h1>Projektstatus</h1>
+            <div class="status-list" id="statusList"></div>
+        </section>
+
+        <!-- DEVELOPER -->
+        <section class="tab-content" id="developer">
+            <h1>Team</h1>
+
+            <div class="dev-list">
+                <div class="dev">
+                    <span class="dev-name">callio9110</span>
+                    <span class="role-tag lead">Projektleitung</span>
+                </div>
+
+                <div class="dev">
+                    <span class="dev-name">Calli2006</span>
+                    <span class="role-tag deputy">Stv. Projektleitung</span>
+                </div>
+
+                <div class="dev">
+                    <span class="dev-name">keigo505</span>
+                    <span class="role-tag dev">Developer</span>
+                </div>
+
+                <div class="dev">
+                    <span class="dev-name">otto_noskar2</span>
+                    <span class="role-tag dev">Developer</span>
+                </div>
+
+                <div class="dev">
+                    <span class="dev-name">diozshadow</span>
+                    <span class="role-tag dev">Developer</span>
+                </div>
+
+                <div class="dev">
+                    <span class="dev-name">sweevag1987</span>
+                    <span class="role-tag dev">Developer</span>
+                </div>
+
+                <div class="dev">
+                    <span class="dev-name">chxxlie.2912</span>
+                    <span class="role-tag dev">Developer</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
 
