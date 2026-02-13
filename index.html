@@ -3,102 +3,354 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erfurt V2 • Status</title>
-    <link rel="stylesheet" href="style.css">
+    <title>ÖPNV-Simulator Roleplay</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<!-- LOADER -->
-<div class="loader" id="loader">
-    <div class="loader-card">
-        <h1>Willkommen!</h1>
-        <div class="loader-bar">
-            <div class="loader-progress" id="loaderProgress"></div>
-        </div>
-    </div>
-</div>
-
-<!-- BACKGROUND -->
-<div class="bg"></div>
-
-<!-- APP -->
-<div class="app hidden" id="app">
-
-    <header>
-        <h2>Erfurt V2</h2>
-        <p>Status & Entwicklung</p>
-    </header>
-
-    <nav class="tabs">
-        <button class="tab active" data-tab="home">Home</button>
-        <button class="tab" data-tab="status">Status</button>
-        <button class="tab" data-tab="developer">Developer</button>
-    </nav>
-
-    <main>
-
-        <!-- HOME -->
-        <section class="tab-content active" id="home">
-            <h1>Willkommen bei Erfurt V2</h1>
-            <p>
-                Diese Website wurde erstellt, um unseren Nutzern transparent zu zeigen,
-                woran wir aktuell arbeiten, welche Systeme sich in Entwicklung befinden
-                und was bereits abgeschlossen ist.
-            </p>
-        </section>
-
-        <!-- STATUS -->
-        <section class="tab-content" id="status">
-            <h1>Projektstatus</h1>
-            <div class="status-list" id="statusList"></div>
-        </section>
-
-        <!-- DEVELOPER -->
-        <section class="tab-content" id="developer">
-            <h1>Developer Team</h1>
-
-            <div class="dev-list">
-                <div class="dev">
-                    <span class="dev-name">Calli2006</span>
-                    <span class="role-tag lead">Projektleitung</span>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-title">
+                    <h1>ÖPNV-Simulator Roleplay</h1>
+                    <p>Trete einem spannenden Roleplay bei und werde Teil unserer Community!</p>
                 </div>
-                <div class="dev">
-                    <span class="dev-name">keigo505</span>
-                    <span class="role-tag dev">Developer</span>
-                </div>
-
-                <div class="dev">
-                    <span class="dev-name">otto_noskar2</span>
-                    <span class="role-tag dev">Developer</span>
-                </div>
-
-                <div class="dev">
-                    <span class="dev-name">diozshadow</span>
-                    <span class="role-tag dev">Developer</span>
-                </div>
-
-                <div class="dev">
-                    <span class="dev-name">sweevag1987</span>
-                    <span class="role-tag dev">Developer</span>
-                </div>
-
-                <div class="dev">
-                    <span class="dev-name">chxxlie.2912</span>
-                    <span class="role-tag dev">Developer</span>
-                </div>
-
-                <div class="dev">
-                    <span class="dev-name">Freddy_12022</span>
-                    <span class="role-tag dev">Developer</span>
+                <div class="header-user">
+                    <span id="userSection" style="display: none;">
+                        <span class="user-info">Angemeldet als: <strong id="currentUsername"></strong></span>
+                        <button id="adminBtn" class="btn btn-secondary" onclick="openAdminModal()" style="display: none;">Verwaltung</button>
+                        <button class="btn btn-danger" onclick="logout()">Abmelden</button>
+                    </span>
                 </div>
             </div>
-        </section>
-
-    </main>
-</div>
-
-<script src="script.js"></script>
+        </header>
+        
+        <!-- Edit Modal -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Roleplay bearbeiten</h2>
+                    <button class="modal-close" onclick="closeEditModal()">×</button>
+                </div>
+                <form id="editRoleplayForm" onsubmit="saveEditRoleplay(event)">
+                    <input type="hidden" id="editRoleplayId">
+                    
+                    <div class="form-group">
+                        <label for="editRoleplayName">Name des Roleplays</label>
+                        <input type="text" id="editRoleplayName" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editRoleplayDescription">Beschreibung</label>
+                        <textarea id="editRoleplayDescription" name="description" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editRoleplayMaxParticipants">Maximale Teilnehmerzahl</label>
+                        <input type="number" id="editRoleplayMaxParticipants" name="maxParticipants" min="1" max="100" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editRoleplayCity">Stadt/Region</label>
+                        <input type="text" id="editRoleplayCity" name="city" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editRoleplayRegistrationDeadline">Anmeldungsfrist</label>
+                        <input type="datetime-local" id="editRoleplayRegistrationDeadline" name="registrationDeadline" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editRoleplayStartDate">Startdatum & -uhrzeit</label>
+                        <input type="datetime-local" id="editRoleplayStartDate" name="startDate" required>
+                    </div>
+                    
+                    <button type="submit">Änderungen speichern</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-button" onclick="switchTab('login')" id="loginTabBtn">Anmelden</button>
+            <button class="tab-button active" onclick="switchTab('browse')">Roleplays durchsuchen</button>
+            <button id="manageTabBtn" class="tab-button" onclick="switchTab('manage')" style="display: none;">Roleplays verwalten</button>
+            <button id="registrationsTabBtn" class="tab-button" onclick="switchTab('registrations')" style="display: none;">Anmeldungen</button>
+            <button class="tab-button" onclick="switchTab('team')">Unser Team</button>
+        </div>
+        
+        <!-- Tab: Login -->
+        <div id="tab-login" class="tab-content">
+            <div class="content">
+                <div class="section login-section">
+                    <h2>Anmelden</h2>
+                    <form id="loginForm" onsubmit="login(event)">
+                        <div class="form-group">
+                            <label for="loginUsername">Benutzername</label>
+                            <input type="text" id="loginUsername" name="username" required placeholder="Benutzername eingeben">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">Passwort</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="loginPassword" name="password" required placeholder="Passwort eingeben">
+                                <button type="button" class="btn-icon" onclick="togglePasswordVisibility('loginPassword')">👁️</button>
+                            </div>
+                        </div>
+                        
+                        <div id="loginError" class="error-message" style="display: none;"></div>
+                        
+                        <button type="submit" class="btn btn-primary">Anmelden</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab: Verfügbare Roleplays durchsuchen -->
+        <div id="tab-browse" class="tab-content active">
+            <div class="content">
+                <div class="section">
+                    <h2>Verfügbare Roleplays</h2>
+                    <ul class="roleplay-list" id="roleplayList"></ul>
+                </div>
+                
+                <!-- Registrierungsformular -->
+                <div class="section">
+                    <h2>Anmeldung</h2>
+                    <div class="success-message" id="successMessage">
+                        ✓ Anmeldung erfolgreich! Willkommen im ÖPNV-Simulator Roleplay!
+                    </div>
+                    <form id="registrationForm" onsubmit="submitForm(event)">
+                        <div class="form-group">
+                            <label for="username">Benutzername</label>
+                            <input type="text" id="username" name="username" required placeholder="Dein Nickname">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">E-Mail</label>
+                            <input type="email" id="email" name="email" required placeholder="deine@email.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="roleplay">Wähle ein Roleplay</label>
+                            <select id="roleplay" name="roleplay" required>
+                                <option value="">-- Bitte wählen --</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="role">Gewünschte Rolle</label>
+                            <select id="role" name="role" required>
+                                <option value="">-- Bitte wählen --</option>
+                                <option value="fahrer">Fahrer</option>
+                                <option value="kontrolleur">Kontrolleur</option>
+                                <option value="techniker">Techniker</option>
+                                <option value="fahrgast">Fahrgast</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bio">Über dich</label>
+                            <textarea id="bio" name="bio" required placeholder="Erzähle etwas über dich und warum du teilnehmen möchtest..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Anmelden</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab: Roleplays verwalten -->
+        <div id="tab-manage" class="tab-content">
+            <div class="content">
+                <div class="section">
+                    <h2>Neues Roleplay erstellen</h2>
+                    <div class="success-message" id="createSuccessMessage">
+                        ✓ Roleplay erfolgreich erstellt!
+                    </div>
+                    <form id="createRoleplayForm" onsubmit="createRoleplay(event)">
+                        <div class="form-group">
+                            <label for="newRoleplayName">Name des Roleplays</label>
+                            <input type="text" id="newRoleplayName" name="name" required placeholder="z.B. U-Bahn Berlin">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newRoleplayDescription">Beschreibung</label>
+                            <textarea id="newRoleplayDescription" name="description" required placeholder="Beschreibe das Roleplay detailliert..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newRoleplayMaxParticipants">Maximale Teilnehmerzahl</label>
+                            <input type="number" id="newRoleplayMaxParticipants" name="maxParticipants" min="1" max="100" required value="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newRoleplayCity">Stadt/Region</label>
+                            <input type="text" id="newRoleplayCity" name="city" required placeholder="z.B. Berlin, München, Schweiz">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newRoleplayRegistrationDeadline">Anmeldungsfrist</label>
+                            <input type="datetime-local" id="newRoleplayRegistrationDeadline" name="registrationDeadline" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newRoleplayStartDate">Startdatum & -uhrzeit</label>
+                            <input type="datetime-local" id="newRoleplayStartDate" name="startDate" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Roleplay erstellen</button>
+                    </form>
+                </div>
+                
+                <div class="section">
+                    <h2>Meine erstellten Roleplays</h2>
+                    <div id="createdRoleplays"></div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="section">
+                    <h2>Alle Roleplays verwalten</h2>
+                    <div class="management-toolbar">
+                        <label>
+                            <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()"> Alle auswählen
+                        </label>
+                        <button class="btn-danger" onclick="deleteSelectedRoleplays()" style="display: none;" id="deleteSelectedBtn">Ausgewählte löschen</button>
+                    </div>
+                    <div id="manageRoleplays" class="manage-roleplays"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab: Anmeldungen -->
+        <div id="tab-registrations" class="tab-content">
+            <div class="content" style="grid-template-columns: 1fr;">
+                <div class="section">
+                    <h2>Anmeldungen</h2>
+                    <div id="registrationsContainer" class="registrations-container"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab: Unser Team -->
+        <div id="tab-team" class="tab-content">
+            <div class="content" style="grid-template-columns: 1fr;">
+                <div class="section">
+                    <h2>Unser Team</h2>
+                    <div id="teamContainer" class="team-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Management Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Benutzerverwaltung</h2>
+                <button class="modal-close" onclick="closeAdminModal()">×</button>
+            </div>
+            
+            <div class="admin-tabs">
+                <button class="admin-tab-btn active" onclick="switchAdminTab('users')">Benutzer</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('create')">Neuer Benutzer</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('team')">Team verwalten</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('addTeam')">Neues Mitglied</button>
+            </div>
+            
+            <!-- Tab: Benutzerliste -->
+            <div id="admin-users" class="admin-tab-content active">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Benutzername</th>
+                            <th>Rolle</th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTable"></tbody>
+                </table>
+            </div>
+            
+            <!-- Tab: Neuer Benutzer -->
+            <div id="admin-create" class="admin-tab-content">
+                <form id="createUserForm" onsubmit="createUser(event)">
+                    <div class="form-group">
+                        <label for="newUsername">Benutzername</label>
+                        <input type="text" id="newUsername" name="username" required placeholder="Benutzername">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newPassword">Passwort</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="newPassword" name="password" required placeholder="Passwort">
+                            <button type="button" class="btn-icon" onclick="togglePasswordVisibility('newPassword')">👁️</button>
+                            <button type="button" class="btn-icon" onclick="generatePassword('newPassword')">🔄</button>
+                        </div>
+                        <div id="passwordStrength" class="password-strength">
+                            <div class="strength-bar"><div id="strengthIndicator" class="strength-fill"></div></div>
+                            <span id="strengthText" class="strength-text"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newRole">Rolle</label>
+                        <select id="newRole" name="role" required>
+                            <option value="user">Benutzer</option>
+                            <option value="beobachter">Beobachter</option>
+                            <option value="verwalter">Verwalter</option>
+                            <option value="admin">Administrator</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Benutzer erstellen</button>
+                </form>
+            </div>
+            
+            <!-- Tab: Team verwalten -->
+            <div id="admin-team" class="admin-tab-content">
+                <h3>Team-Verwaltung</h3>
+                <div id="teamManagementContainer" class="team-management-container"></div>
+            </div>
+            
+            <!-- Tab: Neues Team-Mitglied -->
+            <div id="admin-addTeam" class="admin-tab-content">
+                <form id="addTeamMemberForm" onsubmit="createTeamMember(event)">
+                    <div class="form-group">
+                        <label for="teamName">Name</label>
+                        <input type="text" id="teamName" name="name" required placeholder="Vollständiger Name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="teamPosition">Position</label>
+                        <select id="teamPosition" name="position" required>
+                            <option value="">-- Bitte wählen --</option>
+                            <option value="Gameentwickler">Gameentwickler</option>
+                            <option value="Management">Management</option>
+                            <option value="Developer">Developer</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Support">Support</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="teamDescription">Beschreibung</label>
+                        <textarea id="teamDescription" name="description" placeholder="z.B. Verantwortlich für..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="teamImage">Roblox Profil-URL</label>
+                        <input type="url" id="teamImage" name="image" placeholder="https://www.roblox.com/users/..." oninput="updateAvatarPreview()">
+                        <div id="avatarPreview" class="avatar-preview" style="display: none;">
+                            <img id="previewImg" src="" alt="Avatar Preview">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Team-Mitglied hinzufügen</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
 </body>
 </html>
-
-
